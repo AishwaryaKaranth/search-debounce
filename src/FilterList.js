@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
+import debounce from 'loadash.debounce';
 
 export function FilteredList({names}){
     const [query, setQuery]=useState("");
@@ -18,9 +19,12 @@ export function FilteredList({names}){
         setQuery(event.target.value);
     }
 
+    const debouncedChangeHandler = useCallback(
+        debounce(changeHandler, 300),[]);
+
     return(
         <div>
-            <input type="text" placeholder="Type here..." onChange={changeHandler}/>
+            <input type="text" placeholder="Type here..." onChange={debouncedChangeHandler}/>
             {filteredNames}
             {filteredNames.map((name)=>{
                 <div>{name}</div>
